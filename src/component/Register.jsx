@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+const API = import.meta.env.VITE_APP_URL
 
 export default function Register() {
     const [user, setUser] = useState({});
@@ -8,7 +9,7 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault(); 
     try{
-        const url = "https://cafe-backend-two.vercel.app//api/user/register";
+        const url = `${API}/api/user/register`;
         const result = await axios.post(url, user);
         seterror("successfully registered");
     }catch(err){
