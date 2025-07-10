@@ -8,7 +8,7 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault(); 
     try{
-        const url = "http://localhost:8080/api/user/register";
+        const url = "https://cafe-backend-two.vercel.app//api/user/register";
         const result = await axios.post(url, user);
         seterror("successfully registered");
     }catch(err){
