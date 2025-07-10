@@ -1,0 +1,6 @@
+.App-Home-Header{
+    /* background-color: aqua; */
+  background-image: linear-gradient(to right, rgb(94, 211, 226) , rgb(247, 132, 237));
+    border: solid,1px rgb(214, 122, 241);
+    box-shadow: 10px 10px 6px rgb(99, 146, 217);
+}
