@@ -1,0 +1,95 @@
+.login-container {
+  width: 90%;
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #333;
+}
+.login-container input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.login-container input {
+  width: 90%;
+  padding: 12px ;
+  margin: 7px ;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.login-container button:hover {
+  background-color: #0056b3;
+}
+
+.login-container a {
+  display: block;
+  text-align: center;
+  margin-top: 18px;
+  text-decoration: none;
+  color: #007bff;
+}
+
+.login-container a:hover {
+  text-decoration: underline;
+}
+
+.login-error {
+  color: red;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+/* RESPONSIVE SCREENS */
+
+/* For small tablets */
+@media screen and (max-width: 768px) {
+  .login-container {
+    padding: 25px;
+    margin: 40px auto;
+  }
+}
+
+/* For very small devices */
+@media screen and (max-width: 480px) {
+  .login-container {
+    padding: 20px;
+    margin: 30px auto;
+  }
+
+  .login-container h2 {
+    font-size: 20px;
+  }
+
+  .login-container input,
+  .login-container button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

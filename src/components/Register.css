@@ -1,20 +1,113 @@
 .App-Register-Row {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
+  width: 90%;
+  max-width: 450px;
+  margin: 60px auto;
+  padding: 35px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+  box-sizing: border-box;
+}
+
+.App-Register-Row h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
 }
 
 .App-Register-Row input {
-    padding: 5px;
-    margin: 5px;
-    width: 100%;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  margin: 10px ;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border 0.3s;
+}
+
+.App-Register-Row input:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
 .App-Register-Row button {
-    padding: 5px;
-    margin: 5px;
-    width: 100%;
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.App-Register-Row button:hover {
+  background-color: #0056b3;
+}
+
+.App-Register-Row a {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.App-Register-Row a:hover {
+  text-decoration: underline;
+}
+
+.App-Register-Row p {
+  margin: 0;
+}
+
+.App-Register-Row hr {
+  margin: 20px 0;
+  border: none;
+  height: 1px;
+  background: #eaeaea;
+}
+
+.App-Register-Row div {
+  box-sizing: border-box;
+}
+
+/* Error / Success Message */
+.App-Register-Row .message {
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 15px;
+  color: red;
+}
+
+/* Success styling */
+.App-Register-Row .success {
+  color: green;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .App-Register-Row {
+    padding: 25px;
+    margin-top: 40px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .App-Register-Row {
+    padding: 20px;
+    margin-top: 30px;
+  }
+
+  .App-Register-Row h2 {
+    font-size: 20px;
+  }
+
+  .App-Register-Row input,
+  .App-Register-Row button {
+    font-size: 14px;
+    padding: 10px;
+  }
 }
