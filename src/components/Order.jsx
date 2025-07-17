@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { useContext } from "react";
 import { AppContext } from "../App";
+import "../styles/Order.css";
+
 export default function Order() {
   const API_URL = import.meta.env.VITE_API_URL;
   const { user } = useContext(AppContext);
   const [error, setError] = useState();
   const [orders, setOrders] = useState([]);
+
   const fetchOrders = async () => {
     try {
       const url = `${API_URL}/api/orders/${user.email}`;
@@ -23,37 +25,55 @@ export default function Order() {
   }, []);
 
   return (
-    <div>
+    <div className="order-container">
       <h3>My Orders</h3>
-      {orders &&
-        orders.map((order) => (
-          <div>
-            <p>OrderId:{order._id}</p>
-            <p>Order Value: {order.orderValue} </p>
-            <p>Status:{order.status}</p>
-            <table border="1">
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {orders.map((order) => (
+        <div key={order._id} className="order-card">
+          <p><strong>Order ID:</strong> {order._id}</p>
+          <p><strong>Order Value:</strong> ₹{order.orderValue}</p>
+          <p>
+  <strong>Status:</strong>{" "}
+  <span
+    className={`status-badge ${
+      order.status.toLowerCase() === "completed"
+        ? "status-completed"
+        : order.status.toLowerCase() === "cancelled"
+        ? "status-cancelled"
+        : order.status.toLowerCase() === "pending"
+        ? "status-pending"
+        : "status-processing"
+    }`}
+  >
+    {order.status}
+  </span>
+</p>
+
+
+          <table className="order-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price (₹)</th>
+                <th>Quantity</th>
+                <th>Total (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
               {order.items.map((item) => (
-                <tbody key={item._id}>
-                  <tr>
-                    <td>{item.productName}</td>
-                    <td>{item.price}</td>
-                    <td>{item.qty}</td>
-                    <td>{item.qty * item.price}</td>
-                  </tr>
-                </tbody>
+                <tr key={item._id}>
+                  <td data-label="Product">{item.productName}</td>
+                  <td data-label="Price (₹)">{item.price}</td>
+                  <td data-label="Quantity">{item.qty}</td>
+                  <td data-label="Total (₹)">{item.qty * item.price}</td>
+                </tr>
               ))}
-            </table>
-            <hr />
-          </div>
-        ))}
+            </tbody>
+          </table>
+
+          <hr className="order-divider" />
+        </div>
+      ))}
     </div>
   );
 }

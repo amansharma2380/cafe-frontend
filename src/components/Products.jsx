@@ -38,8 +38,8 @@ export default function Products() {
     try {
       const url = `${API_URL}/api/products/${id}`;
       const result = await axios.delete(url);
-      setError("User Deleted Successfully");
-      fetchUsers();
+      setError("Products Deleted Successfully");
+      fetchProducts();
     } catch (err) {
       console.log(err);
       setError("Something went wrong");
@@ -60,7 +60,7 @@ export default function Products() {
     try {
       const url = `${API_URL}/api/products`;
       const result = await axios.post(url, form);
-      setError("User added succesfully");
+      setError("Product added succesfully");
       fetchProducts();
       resetForm();
     } catch (err) {

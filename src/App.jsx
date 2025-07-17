@@ -14,7 +14,7 @@ import Footer from "./components/Footer";
 import Login from "./components/Login";
 import Products from "./components/Products";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
-import "./App.css";
+// import "./App.css";
 export const AppContext = createContext();
 function App() {
   const [cart, setCart] = useState([]);

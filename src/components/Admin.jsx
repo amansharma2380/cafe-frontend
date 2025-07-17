@@ -1,12 +1,26 @@
-import React from "react";
-import { Outlet, Link } from "react-router-dom";
-export default function Admin() {
+// AdminLayout.jsx
+
+import React from 'react';
+import { Link, Outlet } from 'react-router-dom';
+import "../styles/Admin.css";
+
+export default function AdminLayout() {
   return (
-    <div>
-      <Link to="/admin">Users</Link>-
-      <Link to="/admin/products">Products</Link>-
-      <Link to="/admin/orders">Orders</Link>
-      <div>
+    <div className="admin-container">
+      {/* Admin Navbar */}
+      <div className="admin-navbar">
+        <div className="nav-spacer" /> {/* pushes nav items to right */}
+        <div className="nav-links">
+          <Link to="/admin">Users</Link>
+          <span>-</span>
+          <Link to="/admin/products">Products</Link>
+          <span>-</span>
+          <Link to="/admin/orders">Orders</Link>
+        </div>
+      </div>
+
+      {/* Outlet */}
+      <div className="admin-content">
         <Outlet />
       </div>
     </div>

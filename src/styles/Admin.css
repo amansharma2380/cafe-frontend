@@ -1,0 +1,33 @@
+.admin-navbar {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: #dbeafe;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.nav-spacer {
+  flex-grow: 1;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  border: 2px solid transparent;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-links a:hover {
+  border-color: #007bff;
+  transform: scale(1.1);
+  background-color: #ebf4ff;
+}
