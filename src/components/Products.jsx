@@ -1,7 +1,6 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import { useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+// import "../styles/Products.css";
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState();
@@ -15,9 +14,10 @@ export default function Products() {
   const [page, setPage] = useState(1);
   const [searchVal, setSearchVal] = useState("");
   const [totalPages, setTotalPages] = useState(1);
-  const [limit, setLimit] = useState(2);
+  const [limit] = useState(2);
   const [editId, setEditId] = useState();
   const API_URL = import.meta.env.VITE_API_URL;
+
   const fetchProducts = async () => {
     try {
       setError("Loading...");
@@ -31,14 +31,15 @@ export default function Products() {
       setError("Something went wrong");
     }
   };
+
   useEffect(() => {
     fetchProducts();
   }, [page]);
+
   const handleDelete = async (id) => {
     try {
-      const url = `${API_URL}/api/products/${id}`;
-      const result = await axios.delete(url);
-      setError("Products Deleted Successfully");
+      await axios.delete(`${API_URL}/api/products/${id}`);
+      setError("Product deleted successfully");
       fetchProducts();
     } catch (err) {
       console.log(err);
@@ -58,9 +59,8 @@ export default function Products() {
       return;
     }
     try {
-      const url = `${API_URL}/api/products`;
-      const result = await axios.post(url, form);
-      setError("Product added succesfully");
+      await axios.post(`${API_URL}/api/products`, form);
+      setError("Product added successfully");
       fetchProducts();
       resetForm();
     } catch (err) {
@@ -72,7 +72,6 @@ export default function Products() {
   const handleEdit = (product) => {
     setEditId(product._id);
     setForm({
-      ...form,
       productName: product.productName,
       description: product.description,
       price: product.price,
@@ -88,12 +87,11 @@ export default function Products() {
       return;
     }
     try {
-      const url = `${API_URL}/api/products/${editId}`;
-      const result = await axios.patch(url, form);
+      await axios.patch(`${API_URL}/api/products/${editId}`, form);
       fetchProducts();
       setEditId();
       resetForm();
-      setError("User information updated successfully");
+      setError("Product updated successfully");
     } catch (err) {
       console.log(err);
       setError("Something went wrong");
@@ -107,18 +105,18 @@ export default function Products() {
 
   const resetForm = () => {
     setForm({
-      ...form,
       productName: "",
       description: "",
       price: "",
       imgUrl: "",
     });
   };
+
   return (
-    <div>
-      <h2>Product Management</h2>
-      {error}
-      <div>
+    <div className="product-container">
+      <div className="form-section">
+        <h2>{editId ? "Edit Product" : "Add Product"}</h2>
+        {error && <p>{error}</p>}
         <form ref={frmRef}>
           <input
             name="productName"
@@ -148,66 +146,76 @@ export default function Products() {
             name="imgUrl"
             value={form.imgUrl}
             type="text"
-            placeholder="Image Url"
+            placeholder="Image URL"
             onChange={handleChange}
             required
           />
-
-
           {editId ? (
             <>
               <button onClick={handleUpdate}>Update</button>
-              <button onClick={handleCancel}>Cancel</button>
+              <button onClick={handleCancel} type="button">
+                Cancel
+              </button>
             </>
           ) : (
             <button onClick={handleAdd}>Add</button>
           )}
         </form>
       </div>
-      <div>
-        <input type="text" onChange={(e) => setSearchVal(e.target.value)} />
-        <button onClick={fetchProducts}>Search</button>
-      </div>
-      <div>
-        <table border="1">
+
+      <div className="product-list-section">
+        <h2>Product List</h2>
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search by name"
+            onChange={(e) => setSearchVal(e.target.value)}
+          />
+          <button onClick={fetchProducts}>Search</button>
+        </div>
+
+        <table>
           <thead>
             <tr>
               <th>Product Name</th>
               <th>Description</th>
               <th>Price</th>
-              <th>Image Url</th>
+              <th>Image</th>
               <th>Action</th>
             </tr>
           </thead>
-          {products.map((value) => (
-            <tbody key={value._id}>
-              <tr>
+          <tbody>
+            {products.map((value, index) => (
+              <tr key={value._id} style={{ animationDelay: `${index * 0.1}s` }}>
                 <td>{value.productName}</td>
                 <td>{value.description}</td>
                 <td>{value.price}</td>
-                <td>{value.imgUrl}</td>
                 <td>
-                  <button onClick={() => handleEdit(value)}>Edit</button>
-                  <button onClick={() => handleDelete(value._id)}>
-                    Delete
-                  </button>
+                  <a href={value.imgUrl} target="_blank" rel="noreferrer">
+                    View
+                  </a>
+                </td>
+                <td>
+                  <button className="edit" onClick={() => handleEdit(value)}>Edit</button>
+                  <button className="dlt" onClick={() => handleDelete(value._id)}>Delete</button>
                 </td>
               </tr>
-            </tbody>
-          ))}
+            ))}
+          </tbody>
         </table>
-      </div>
-      <div>
-        <button disabled={page === 1} onClick={() => setPage(page - 1)}>
-          Previous
-        </button>
-        Page {page} of {totalPages}
-        <button
-          disabled={page === totalPages}
-          onClick={() => setPage(page + 1)}
-        >
-          Next
-        </button>
+
+        <div className="pagination">
+          <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+            Previous
+          </button>
+          Page {page} of {totalPages}
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

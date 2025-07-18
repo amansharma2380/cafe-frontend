@@ -1,9 +1,8 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import { useRef } from "react";
-import { useContext } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { AppContext } from "../App";
 import axios from "axios";
+import "../styles/Users.css";
+
 export default function Users() {
   const [users, setUsers] = useState([]);
   const { user } = useContext(AppContext);
@@ -19,41 +18,39 @@ export default function Users() {
   const [page, setPage] = useState(1);
   const [searchVal, setSearchVal] = useState("");
   const [totalPages, setTotalPages] = useState(1);
-  const [limit, setLimit] = useState(2);
+  const [limit] = useState(2);
   const [editId, setEditId] = useState();
   const API_URL = import.meta.env.VITE_API_URL;
+
   const fetchUsers = async () => {
     try {
       setError("Loading...");
       const url = `${API_URL}/api/users/?page=${page}&limit=${limit}&search=${searchVal}`;
       const result = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: { Authorization: `Bearer ${user.token}` },
       });
       setUsers(result.data.users);
       setTotalPages(result.data.total);
       setError();
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setError("Something went wrong");
     }
   };
+
   useEffect(() => {
     fetchUsers();
   }, [page]);
+
   const handleDelete = async (id) => {
     try {
-      const url = `${API_URL}/api/users/${id}`;
-      const result = await axios.delete(url, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+      await axios.delete(`${API_URL}/api/users/${id}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
       });
-      setError("User Deleted Successfully");
+      setError("User deleted successfully");
       fetchUsers();
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setError("Something went wrong");
     }
   };
@@ -70,17 +67,14 @@ export default function Users() {
       return;
     }
     try {
-      const url = `${API_URL}/api/users`;
-      const result = await axios.post(url, form, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+      await axios.post(`${API_URL}/api/users`, form, {
+        headers: { Authorization: `Bearer ${user.token}` },
       });
-      setError("User added succesfully");
+      setError("User added successfully");
       fetchUsers();
       resetForm();
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setError("Something went wrong");
     }
   };
@@ -88,7 +82,6 @@ export default function Users() {
   const handleEdit = (user) => {
     setEditId(user._id);
     setForm({
-      ...form,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
@@ -105,18 +98,15 @@ export default function Users() {
       return;
     }
     try {
-      const url = `${API_URL}/api/users/${editId}`;
-      const result = await axios.patch(url, form, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+      await axios.patch(`${API_URL}/api/users/${editId}`, form, {
+        headers: { Authorization: `Bearer ${user.token}` },
       });
       fetchUsers();
       setEditId();
       resetForm();
-      setError("User information updated successfully");
+      setError("User updated successfully");
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setError("Something went wrong");
     }
   };
@@ -128,7 +118,6 @@ export default function Users() {
 
   const resetForm = () => {
     setForm({
-      ...form,
       firstName: "",
       lastName: "",
       email: "",
@@ -136,11 +125,12 @@ export default function Users() {
       role: "",
     });
   };
+
   return (
-    <div>
-      <h2>User Management</h2>
-      {error}
-      <div>
+    <div className="user-container">
+      <div className="form-section">
+        <h2>{editId ? "Edit User" : "Add User"}</h2>
+        {error && <p>{error}</p>}
         <form ref={frmRef}>
           <input
             name="firstName"
@@ -162,7 +152,7 @@ export default function Users() {
             name="email"
             value={form.email}
             type="text"
-            placeholder="Email Address"
+            placeholder="Email"
             onChange={handleChange}
             required
           />
@@ -170,7 +160,7 @@ export default function Users() {
             name="password"
             value={form.password}
             type="password"
-            placeholder="New Password"
+            placeholder="Password"
             onChange={handleChange}
             required
           />
@@ -184,67 +174,67 @@ export default function Users() {
             <option value="user">User</option>
             <option value="admin">Admin</option>
           </select>
-          {/* <input
-            name="role"
-            value={form.role}
-            type="text"
-            onChange={handleChange}
-            placeholder="Role"
-          /> */}
-
           {editId ? (
             <>
               <button onClick={handleUpdate}>Update</button>
-              <button onClick={handleCancel}>Cancel</button>
+              <button onClick={handleCancel} type="button">
+                Cancel
+              </button>
             </>
           ) : (
             <button onClick={handleAdd}>Add</button>
           )}
         </form>
       </div>
-      <div>
-        <input type="text" onChange={(e) => setSearchVal(e.target.value)} />
-        <button onClick={() => fetchUsers()}>Search</button>
-      </div>
-      <div>
-        <table border="1">
+
+      <div className="user-list-section">
+        <h2>User List</h2>
+        <div>
+          <input
+            type="text"
+            placeholder="Search by name/email"
+            value={searchVal}
+            onChange={(e) => setSearchVal(e.target.value)}
+          />
+          <button onClick={fetchUsers}>Search</button>
+        </div>
+        <table>
           <thead>
             <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email Address</th>
+              <th>First</th>
+              <th>Last</th>
+              <th>Email</th>
               <th>Role</th>
+              <th>Actions</th>
             </tr>
           </thead>
-          {users.map((value) => (
-            <tbody key={value._id}>
-              <tr>
-                <td>{value.firstName}</td>
-                <td>{value.lastName}</td>
-                <td>{value.email}</td>
-                <td>{value.role}</td>
+          <tbody>
+            {users.map((u) => (
+              <tr key={u._id}>
+                <td>{u.firstName}</td>
+                <td>{u.lastName}</td>
+                <td>{u.email}</td>
+                <td>{u.role}</td>
                 <td>
-                  <button onClick={() => handleEdit(value)}>Edit</button>
-                  <button onClick={() => handleDelete(value._id)}>
-                    Delete
-                  </button>
+                  <button className="edit" onClick={() => handleEdit(u)}>Edit</button>
+                  <button className="dlt" onClick={() => handleDelete(u._id)}>Delete</button>
                 </td>
               </tr>
-            </tbody>
-          ))}
+            ))}
+          </tbody>
         </table>
-      </div>
-      <div>
-        <button disabled={page === 1} onClick={() => setPage(page - 1)}>
-          Previous
-        </button>
-        Page {page} of {totalPages}
-        <button
-          disabled={page === totalPages}
-          onClick={() => setPage(page + 1)}
-        >
-          Next
-        </button>
+        <div className="pagination">
+          <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+            Previous
+          </button>
+          Page {page} of {totalPages}
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
