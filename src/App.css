@@ -1,10 +1,28 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Set full height and full width */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
+/* Full-page flex layout */
+.app-Container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Main content grows to push footer down */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+/* Logo and animations (optional) */
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -25,11 +43,6 @@
   to {
     transform: rotate(360deg);
   }
-}
-.app-Container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }
 
 @media (prefers-reduced-motion: no-preference) {
