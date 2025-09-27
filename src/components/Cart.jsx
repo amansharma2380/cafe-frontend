@@ -51,43 +51,48 @@ export default function Cart() {
   };
 
   return (
-    <div className="cart-container">
-  <h2>My Cart</h2>
-  {error && <p style={{ color: "red" }}>{error}</p>}
+  <div className="cart-container">
+    <h2>My Cart</h2>
+    {error && <p style={{ color: "red" }}>{error}</p>}
 
-  {cart &&
-    cart.map(
-      (value) =>
-        value.qty > 0 && (
-          <div key={value._id} className="cart-item">
-            <img src={value.imgUrl} alt={value.productName} />
-            <div className="cart-item-details">
-              <h3>{value.productName}</h3>
-              <p>Price: ₹{value.price}</p>
-              <div className="qty-buttons">
-                <button onClick={() => decrement(value._id, value.qty)}>-</button>
-                <span>{value.qty}</span>
-                <button onClick={() => increment(value._id, value.qty)}>+</button>
+    {cart && cart.length > 0 ? (
+      cart.map(
+        (value) =>
+          value.qty > 0 && (
+            <div key={value._id} className="cart-item">
+              <img src={value.imgUrl} alt={value.productName} />
+              <div className="cart-item-details">
+                <h3>{value.productName}</h3>
+                <p>Price: ₹{value.price}</p>
+                <div className="qty-buttons">
+                  <button onClick={() => decrement(value._id, value.qty)}>-</button>
+                  <span>{value.qty}</span>
+                  <button onClick={() => increment(value._id, value.qty)}>+</button>
+                </div>
+                <p className="total-value">Total: ₹{value.price * value.qty}</p>
               </div>
-              <p className="total-value" >Total: ₹{value.price * value.qty}</p>
             </div>
-          </div>
-        )
+          )
+      )
+    ) : (
+      <div className="empty-cart-sticker">
+        🛒 Your cart is empty. Start shopping!
+        <br /><button onClick={() => Navigate("/login")}>Login to Order</button>
+      </div>
     )}
 
-  <p className="total-value">Total Order Value: ₹{orderValue}</p>
-
-  <div className="but">
-   {user?.token ? (
-  <button onClick={placeOrder} disabled={orderValue === 0}>
-    Place Order
-  </button>
-) : (
-  <button onClick={() => Navigate("/login")}>Login to Order</button>
-)}
-{orderValue === 0 && <p style={{ color: "orange" }}>Your cart is empty. Please add items.</p>}
+    {orderValue > 0 && (
+      <>
+        <p className="total-value">Total Order Value: ₹{orderValue}</p>
+        <div className="but">
+          {user?.token ? (
+            <button onClick={placeOrder}>Place Order</button>
+          ) : (
+            <button onClick={() => Navigate("/login")}>Login to Order</button>
+          )}
+        </div>
+      </>
+    )}
   </div>
-</div>
-
-  );
+);
 }

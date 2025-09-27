@@ -9,7 +9,7 @@ export default function Header() {
 
   return (
     <div className="navbar">
-      <h1>MERN Frontend</h1>
+      <h1>NutriTore</h1>
       <Link to="/">Home</Link><Link to="/cart">MyCart
        {totalItems > 0 && <span className="cart-count"> ({totalItems})</span>}</Link>
       <Link to="/order">MyOrder</Link>
